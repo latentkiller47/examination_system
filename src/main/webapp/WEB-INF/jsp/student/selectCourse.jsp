@@ -29,35 +29,45 @@
 				<div class="panel panel-default">
 					<div class="panel-heading">
 						<div class="row">
-							<h1 class="col-md-5">已选该课程学生名单</h1>
+							<h1 class="col-md-5">已选课程</h1>
+
+
 						</div>
 					</div>
 					<table class="table table-bordered">
 						<thead>
 							<tr>
-								<th>学号</th>
-								<th>姓名</th>
-								<th>分数</th>
+								<th>课程号</th>
+								<th>课程名称</th>
+								<th>授课老师编号</th>
+								<th>上课时间</th>
+								<th>上课地点</th>
+								<th>周数</th>
+								<th>课程类型</th>
+								<th>学分</th>
 								<th>操作</th>
 							</tr>
 						</thead>
 						<tbody>
 							<c:forEach items="${selectedCourseList}" var="item">
-								<tr>
-									<td>${item.studentCustom.userid}</td>
-									<td>${item.studentCustom.username}</td>
-									<c:if test="${!item.over}">
-										<td>未打分</td>
+								<%--输出还没修完的课程--%>
+								<c:if test="${!item.over}">
+									<tr>
+										<td>${item.couseCustom.courseid}</td>
+										<td>${item.couseCustom.coursename}</td>
+										<td>${item.couseCustom.teacherid}</td>
+										<td>${item.couseCustom.coursetime}</td>
+										<td>${item.couseCustom.classroom}</td>
+										<td>${item.couseCustom.courseweek}</td>
+										<td>${item.couseCustom.coursetype}</td>
+										<td>${item.couseCustom.score}</td>
 										<td>
 											<button class="btn btn-default btn-xs btn-info"
-												onClick="location.href='/teacher/mark?studentid=${item.studentid}&courseid=${item.courseid}'">打分</button>
+												onClick="location.href='/student/outCourse?id=${item.courseid}'">退课</button>
+											<!--弹出框-->
 										</td>
-									</c:if>
-									<c:if test="${item.over}">
-										<td>${item.mark}</td>
-										<td>已打分</td>
-									</c:if>
-								</tr>
+									</tr>
+								</c:if>
 							</c:forEach>
 						</tbody>
 					</table>
@@ -95,15 +105,11 @@
 			</div>
 		</div>
 	</div>
-	<div class="container" id="footer">
-		<div class="row">
-			<div class="col-md-12"></div>
-		</div>
-	</div>
+	<%@include file="Footer.jsp"%>
 </body>
 <script type="text/javascript">
 		<%--设置菜单中--%>
-		$("#nav li:nth-child(1)").addClass("active")
+		$("#nav li:nth-child(2)").addClass("active")
         <c:if test="${pagingVO != null}">
         if (${pagingVO.curentPageNo} == ${pagingVO.totalCount}) {
             $(".pagination li:last-child").addClass("disabled")
