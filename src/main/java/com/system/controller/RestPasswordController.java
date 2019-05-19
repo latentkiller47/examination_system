@@ -23,6 +23,7 @@ public class RestPasswordController {
     // 本账户密码重置
     @RequestMapping(value = "/passwordRest", method = {RequestMethod.POST})
     public String passwordRest(String oldPassword, String password1) throws Exception {
+    	System.out.println("截获2");
         Subject subject = SecurityUtils.getSubject();
         String username = (String) subject.getPrincipal();
 

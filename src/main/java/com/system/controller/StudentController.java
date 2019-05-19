@@ -5,7 +5,6 @@ import com.system.po.*;
 import com.system.service.CourseService;
 import com.system.service.SelectedCourseService;
 import com.system.service.StudentService;
-import com.system.service.TeacherService;
 import org.apache.shiro.SecurityUtils;
 import org.apache.shiro.subject.Subject;
 import org.springframework.stereotype.Controller;
@@ -28,9 +27,6 @@ public class StudentController {
 
     @Resource(name = "studentServiceImpl")
     private StudentService studentService;
-    
-    @Resource(name = "teacherServiceImpl")
-    private TeacherService teacherService;
 
     @Resource(name = "selectedCourseServiceImpl")
     private SelectedCourseService selectedCourseService;
@@ -76,7 +72,9 @@ public class StudentController {
             throw new CustomException("该门课程你已经选了，不能再选");
         }
 
-        return "redirect:/student/selectedCourse";
+        return "redirect:/student/"
+        		+ ""
+        		+ "";
     }
 
     // 退课操作
@@ -84,6 +82,7 @@ public class StudentController {
     public String outCourse(int id) throws Exception {
         Subject subject = SecurityUtils.getSubject();
         String username = (String) subject.getPrincipal();
+    
 
         SelectedCourseCustom selectedCourseCustom = new SelectedCourseCustom();
         selectedCourseCustom.setCourseid(id);
@@ -126,16 +125,19 @@ public class StudentController {
     //修改密码
     @RequestMapping(value = "/passwordRest")
     public String passwordRest() throws Exception {
+    	System.out.println("截获1");
         return "student/passwordRest";
     }
     
-    @RequestMapping(value = "selectCourse", method = {RequestMethod.POST})
-    private String selectCourse(String findByName, Model model) throws Exception {
-
-        List<CourseCustom> list = courseService.findByName(findByName);
-
-        model.addAttribute("courseList", list);
-        return "student/showCourse";
+    //反馈页面
+    @RequestMapping(value = "/Responsive")
+    public String Responsive(Model model) throws Exception {
+    	 Subject subject = SecurityUtils.getSubject();
+         StudentCustom studentCustom = studentService.findStudentAndSelectCourseListByName((String) subject.getPrincipal());
+         List<SelectedCourseCustom> list = studentCustom.getSelectedCourseList();
+         model.addAttribute("selectedCourseList", list);
+        return "student/Responsive";
     }
+
 
 }
