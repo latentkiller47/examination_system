@@ -10,6 +10,10 @@ public interface SelectedcourseMapper {
     int countByExample(SelectedcourseExample example);
 
     int deleteByExample(SelectedcourseExample example);
+    
+    int deleteByStudentID(int id);
+    
+    int deleteByCourseID(int id);
 
     int insert(Selectedcourse record);
 

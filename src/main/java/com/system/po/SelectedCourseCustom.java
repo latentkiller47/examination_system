@@ -12,7 +12,26 @@ public class SelectedCourseCustom extends Selectedcourse {
 
     //判断该学生是否已经完成该课程
     private Boolean over = false;
-
+    
+    private Integer regulargrade;
+    
+    private Integer boardscores;
+    
+    public Integer getRegulargrade(){
+    	return regulargrade;
+    }
+    
+    public void setRegulargrade(Integer regulargrade) {
+    	this.regulargrade=regulargrade;
+    }
+    
+    public Integer getBoardscores(){
+    	return boardscores;
+    }
+    
+    public void setBoardscores(Integer boardscores) {
+    	this.boardscores=boardscores;
+    }
 
     public Boolean getOver() {
         return over;

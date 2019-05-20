@@ -39,7 +39,7 @@
 							<tr>
 								<th>课程号</th>
 								<th>课程名称</th>
-								<th>授课老师编号</th>
+								<th>授课老师</th>
 								<th>上课时间</th>
 								<th>上课地点</th>
 								<th>周数</th>
@@ -55,7 +55,7 @@
 									<tr>
 										<td>${item.couseCustom.courseid}</td>
 										<td>${item.couseCustom.coursename}</td>
-										<td>${item.couseCustom.teacherid}</td>
+										<td>${item.couseCustom.teachername}</td>
 										<td>${item.couseCustom.coursetime}</td>
 										<td>${item.couseCustom.classroom}</td>
 										<td>${item.couseCustom.courseweek}</td>
@@ -63,7 +63,7 @@
 										<td>${item.couseCustom.score}</td>
 										<td>
 											<button class="btn btn-default btn-xs btn-info"
-												onClick="location.href='/student/outCourse?id=${item.courseid}'">退课</button>
+												onClick="location.href='${pageContext.request.contextPath}/student/outCourse?id=${item.courseid}'">退课</button>
 											<!--弹出框-->
 										</td>
 									</tr>

@@ -1,7 +1,9 @@
 package com.system.service.impl;
 
+import com.system.exception.CustomException;
 import com.system.mapper.CollegeMapper;
 import com.system.mapper.StudentMapper;
+import com.system.mapper.SelectedcourseMapper;
 import com.system.mapper.StudentMapperCustom;
 import com.system.po.*;
 import com.system.service.StudentService;
@@ -27,12 +29,16 @@ public class StudentServiceImpl implements StudentService {
 
     @Autowired
     private CollegeMapper collegeMapper;
+    
+    @Autowired
+    private SelectedcourseMapper selectedcourseMapper;
 
     public void updataById(Integer id, StudentCustom studentCustom) throws Exception {
         studentMapper.updateByPrimaryKey(studentCustom);
     }
 
     public void removeById(Integer id) throws Exception {
+        selectedcourseMapper.deleteByStudentID(id);
         studentMapper.deleteByPrimaryKey(id);
     }
 
@@ -110,11 +116,10 @@ public class StudentServiceImpl implements StudentService {
     }
 
     public StudentCustom findStudentAndSelectCourseListByName(String name) throws Exception {
-
         StudentCustom studentCustom = studentMapperCustom.findStudentAndSelectCourseListById(Integer.parseInt(name));
-
+        if(studentCustom == null) return null;
         List<SelectedCourseCustom> list = studentCustom.getSelectedCourseList();
-
+       
         // 判断该课程是否修完
         for (SelectedCourseCustom s : list) {
             if (s.getMark() != null) {

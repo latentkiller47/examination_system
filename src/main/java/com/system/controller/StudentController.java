@@ -70,7 +70,6 @@ public class StudentController {
         } else {
             throw new CustomException("该门课程你已经选了，不能再选");
         }
-
         return "redirect:/student/selectedCourse";
     }
 
@@ -95,9 +94,10 @@ public class StudentController {
         //获取当前用户名
         Subject subject = SecurityUtils.getSubject();
         StudentCustom studentCustom = studentService.findStudentAndSelectCourseListByName((String) subject.getPrincipal());
-
-        List<SelectedCourseCustom> list = studentCustom.getSelectedCourseList();
-
+        
+        List<SelectedCourseCustom> list;
+        if(studentCustom==null) list=null;
+        else list = studentCustom.getSelectedCourseList();
         model.addAttribute("selectedCourseList", list);
 
         return "student/selectCourse";
@@ -111,8 +111,9 @@ public class StudentController {
         Subject subject = SecurityUtils.getSubject();
         StudentCustom studentCustom = studentService.findStudentAndSelectCourseListByName((String) subject.getPrincipal());
 
-        List<SelectedCourseCustom> list = studentCustom.getSelectedCourseList();
-
+        List<SelectedCourseCustom> list;
+        if(studentCustom==null) list=null;
+        else list = studentCustom.getSelectedCourseList();
         model.addAttribute("selectedCourseList", list);
 
         return "student/overCourse";

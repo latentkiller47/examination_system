@@ -37,7 +37,9 @@
 							<tr>
 								<th>学号</th>
 								<th>姓名</th>
-								<th>分数</th>
+								<th>平时成绩</th>
+								<th>考试成绩</th>
+								<th>总成绩</th>
 								<th>操作</th>
 							</tr>
 						</thead>
@@ -46,17 +48,12 @@
 								<tr>
 									<td>${item.studentCustom.userid}</td>
 									<td>${item.studentCustom.username}</td>
-									<c:if test="${!item.over}">
-										<td>未打分</td>
-										<td>
-											<button class="btn btn-default btn-xs btn-info"
-												onClick="location.href='/teacher/mark?studentid=${item.studentid}&courseid=${item.courseid}'">打分</button>
-										</td>
-									</c:if>
-									<c:if test="${item.over}">
-										<td>${item.mark}</td>
-										<td>已打分</td>
-									</c:if>
+									<td>${item.regulargrade}</td>
+									<td>${item.boardscores}</td>
+									<td>${item.mark}</td>
+									<td>
+									<button class="btn btn-default btn-xs btn-info" onClick="location.href='${pageContext.request.contextPath}/teacher/mark?studentid=${item.studentid}&courseid=${item.courseid}'">打分</button>
+									</td>
 								</tr>
 							</c:forEach>
 						</tbody>
@@ -100,6 +97,7 @@
 			<div class="col-md-12"></div>
 		</div>
 	</div>
+	<%@include file="Footer.jsp"%>
 </body>
 <script type="text/javascript">
 		<%--设置菜单中--%>

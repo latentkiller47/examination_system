@@ -68,6 +68,7 @@
 			<div class="col-md-12"></div>
 		</div>
 	</div>
+	<%@include file="Footer.jsp"%>
 </body>
 <script>
     $("#nav li:nth-child(2)").addClass("active")

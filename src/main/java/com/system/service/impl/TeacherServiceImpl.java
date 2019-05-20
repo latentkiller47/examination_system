@@ -38,7 +38,6 @@ public class TeacherServiceImpl implements TeacherService {
 
     public void removeById(Integer id) throws Exception {
         CourseExample courseExample = new CourseExample();
-
         CourseExample.Criteria criteria = courseExample.createCriteria();
         criteria.andTeacheridEqualTo(id);
         List<Course> list = courseMapper.selectByExample(courseExample);

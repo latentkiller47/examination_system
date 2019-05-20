@@ -2,14 +2,9 @@
 
 <div class="col-md-2">
 	<ul class="nav nav-pills nav-stacked" id="nav">
-		<li><a href="${pageContext.request.contextPath}/admin/showCourse">课程管理<span
-				class="badge pull-right">8</span></a></li>
-		<li><a
-			href="${pageContext.request.contextPath}/admin/showStudent">学生管理<span
-				class="badge pull-right">59</span></a></li>
-		<li><a
-			href="${pageContext.request.contextPath}/admin/showTeacher">教师管理<span
-				class="badge pull-right">10</span></a></li>
+		<li><a href="${pageContext.request.contextPath}/admin/showCourse">课程管理</a></li>
+		<li><a href="${pageContext.request.contextPath}/admin/showStudent">学生管理</a></li>
+		<li><a href="${pageContext.request.contextPath}/admin/showTeacher">教师管理</a></li>
 		<li><a
 			href="${pageContext.request.contextPath}/admin/userPasswordRest">账号密码重置<sapn
 					class="glyphicon glyphicon-repeat pull-right" /></a></li>

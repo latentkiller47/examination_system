@@ -50,7 +50,7 @@
 							</div>
 							<div class="form-group">
 								<label for="inputPassword3" class="col-sm-2 control-label"
-									name="grade">授课老师编号</label>
+									name="grade">授课老师</label>
 								<div class="col-sm-10">
 									<select class="form-control" name="teacherid" id="teacherid">
 										<c:forEach items="${teacherList}" var="item">
@@ -109,6 +109,20 @@
 										value="${course.score}" placeholder="请输入学分">
 								</div>
 							</div>
+							<div class="form-group">
+								<label for="inputEmail3" class="col-sm-2 control-label">平时分：</label>
+								<div class="col-sm-10">
+									<input type="number" class="form-control" name="regulargrade"
+										value="${course.regulargrade}" placeholder="请输入平时分">
+								</div>
+							</div>
+							<div class="form-group">
+								<label for="inputEmail3" class="col-sm-2 control-label">考试分：</label>
+								<div class="col-sm-10">
+									<input type="number" class="form-control" name="boardscores"
+										value="${course.boardscores}" placeholder="请输入考试分">
+								</div>
+							</div>
 							<div class="form-group" style="text-align: center">
 								<button class="btn btn-default" type="submit">提交</button>
 								<button class="btn btn-default" type="reset">重置</button>
@@ -126,6 +140,7 @@
 			<div class="col-md-12"></div>
 		</div>
 	</div>
+	<%@include file="Footer.jsp"%>
 </body>
 <script type="text/javascript">
 		$("#nav li:nth-child(1)").addClass("active")

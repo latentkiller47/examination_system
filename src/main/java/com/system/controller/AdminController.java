@@ -235,8 +235,9 @@ public class AdminController {
     }
 
     //删除教师
-    @RequestMapping("/removeTeacher")
+    @RequestMapping(value = "/removeTeacher",method = {RequestMethod.GET})
     public String removeTeacher(Integer id) throws Exception {
+    	System.out.println(id);
         if (id == null) {
             //加入没有带教师id就进来的话就返回教师显示页面
             return "admin/showTeacher";
@@ -299,7 +300,8 @@ public class AdminController {
     // 添加课程信息处理
     @RequestMapping(value = "/addCourse", method = {RequestMethod.POST})
     public String addCourse(CourseCustom courseCustom, Model model) throws Exception {
-
+    	TeacherCustom t = teacherService.findById(courseCustom.getTeacherid());
+    	courseCustom.setTeachername(t.getUsername());
         Boolean result = courseService.save(courseCustom);
 
         if (!result) {
@@ -312,7 +314,7 @@ public class AdminController {
         return "redirect:/admin/showCourse";
     }
 
-    // 修改教师信息页面显示
+    // 修改课程信息页面显示
     @RequestMapping(value = "/editCourse", method = {RequestMethod.GET})
     public String editCourseUI(Integer id, Model model) throws Exception {
         if (id == null) {
@@ -333,10 +335,12 @@ public class AdminController {
         return "admin/editCourse";
     }
 
-    // 修改教师信息页面处理
+    // 修改课程信息页面处理
     @RequestMapping(value = "/editCourse", method = {RequestMethod.POST})
     public String editCourse(CourseCustom courseCustom) throws Exception {
-
+    	TeacherCustom t = teacherService.findById(courseCustom.getTeacherid());
+    	courseCustom.setTeachername(t.getUsername());
+    	
         courseService.upadteById(courseCustom.getCourseid(), courseCustom);
 
         //重定向
@@ -344,11 +348,12 @@ public class AdminController {
     }
 
     // 删除课程信息
-    @RequestMapping("/removeCourse")
+    @RequestMapping(value="/removeCourse",method = {RequestMethod.GET})
     public String removeCourse(Integer id) throws Exception {
         if (id == null) {
             //加入没有带教师id就进来的话就返回教师显示页面
             return "admin/showCourse";
+            
         }
         courseService.removeById(id);
 

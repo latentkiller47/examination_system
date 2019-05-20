@@ -20,6 +20,26 @@ public class Course {
     private Integer collegeid;
 
     private Integer score;
+    
+    private Integer regulargrade;
+    
+    private Integer boardscores;
+    
+    public Integer getRegulargrade() {
+        return regulargrade;
+    }
+
+    public void setRegulargrade(Integer regulargrade) {
+        this.regulargrade = regulargrade;
+    }
+    
+    public Integer getBoardscores() {
+        return boardscores;
+    }
+
+    public void setBoardscores(Integer boardgcores) {
+        this.boardscores = boardgcores;
+    }
 
     public Integer getCourseid() {
         return courseid;
@@ -34,7 +54,7 @@ public class Course {
     }
     
     public void setTeachername(String teachername) {
-        this.teachername = teachername == null ? null : teachername.trim();
+        this.teachername = teachername;
     }
 
     public String getCoursename() {

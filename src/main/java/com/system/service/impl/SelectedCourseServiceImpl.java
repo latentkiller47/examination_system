@@ -34,9 +34,10 @@ public class SelectedCourseServiceImpl implements SelectedCourseService {
         SelectedcourseExample example = new SelectedcourseExample();
         SelectedcourseExample.Criteria criteria = example.createCriteria();
         criteria.andCourseidEqualTo(id);
-
+        
         List<Selectedcourse> list = selectedcourseMapper.selectByExample(example);
         List<SelectedCourseCustom> secList = new ArrayList<SelectedCourseCustom>();
+        
         for (Selectedcourse s: list) {
             SelectedCourseCustom sec = new SelectedCourseCustom();
             BeanUtils.copyProperties(s, sec);
