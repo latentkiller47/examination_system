@@ -71,7 +71,7 @@ public class TeacherController {
     // 打分
     @RequestMapping(value = "/mark", method = {RequestMethod.POST})
     public String mark(SelectedCourseCustom scc) throws Exception {
-
+    	scc.setMark(scc.getRegulargrade()+scc.getBoardscores());
         selectedCourseService.updataOne(scc);
 
         return "redirect:/teacher/gradeCourse?id="+scc.getCourseid();

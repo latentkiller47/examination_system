@@ -36,18 +36,9 @@ public class CourseServiceImpl implements CourseService {
     }
 
     public Boolean removeById(Integer id) throws Exception {
-        //自定义查询条件
-        SelectedcourseExample example = new SelectedcourseExample();
-        SelectedcourseExample.Criteria criteria = example.createCriteria();
-        criteria.andCourseidEqualTo(id);
-        List<Selectedcourse> list = selectedcourseMapper.selectByExample(example);
-
-        if (list.size() == 0) {
-            courseMapper.deleteByPrimaryKey(id);
-            return true;
-        }
-
-        return false;
+    	selectedcourseMapper.deleteByCourseID(id);
+        courseMapper.deleteByPrimaryKey(id);
+        return true;
     }
 
     public List<CourseCustom> findByPaging(Integer toPageNo) throws Exception {

@@ -12,36 +12,31 @@
 <div class="container" id="top">
 	<div class="row">
 		<div class="col-md-12">
-			<!--加入导航条标题-->
+			<br>
+		</div>
+	</div>
+	<div class="row">
+		<div class="col-md-12">
 			<div class="navbar navbar-default" role="navigation">
 				<div class="navbar-header">
-					<a href="##" class="navbar-brand">教务信息查询系统(管理员)</a>
+					<a class="navbar-brand" href="#"> <img alt="Brand"
+						style="max-width: 200px; margin-top: -7px;"
+						src="${pageContext.request.contextPath}/images/logo.png">
+					</a>
 				</div>
-				<form action="##" class="navbar-form navbar-right" rol="search">
-					<div class="dropdown">
-						<button class="btn btn-default dropdown-toggle" type="button"
-							id="dropdownMenu1" data-toggle="dropdown"
-							style="margin-right: 20px;">
-							<%--登录用户名--%>
-							<span class="glyphicon glyphicon-user"><shiro:principal /></span>
-							<span class="caret"></span>
-						</button>
-						<ul class="dropdown-menu" role="menu"
-							aria-labelledby="dropdownMenu1">
-							<li role="presentation"><a role="menuitem" tabindex="-1"
-								href="#"> <span class="glyphicon glyphicon-cog pull-right"></span>
-									修改个人信息
-							</a></li>
-							<!-分割线--->
-							<li role="presentation" class="divider"></li>
-							<li role="presentation"><a role="menuitem" tabindex="-1"
-								href="${pageContext.request.contextPath}/logout"> <span
-									class="glyphicon glyphicon-off pull-right"></span> 注销
-							</a></li>
-						</ul>
-					</div>
-
-				</form>
+				<div class="navbar-brand" style="margin-left:35%">
+					<span class="glyphicon glyphicon-user"><shiro:principal /></span>
+					<span> <script type="text/javascript">
+                     		var date = new Date();
+                     		document.write("，管理员您好！");
+                   		</script>
+					</span>
+					<span> <script type="text/javascript">
+                     		var date = new Date();
+                     		document.write(date.getFullYear() + "年" + (date.getMonth() + 1) + "月" + date.getDate() + "日" + " 星期" + "日一二三四五六".charAt(date.getDay()));
+                   		</script>
+					</span>
+				</div>
 			</div>
 
 		</div>

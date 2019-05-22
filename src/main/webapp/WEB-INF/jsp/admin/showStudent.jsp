@@ -41,7 +41,7 @@
 								</div>
 							</form>
 							<button class="btn btn-default col-md-2" style="margin-top: 20px"
-								onClick="location.href='/admin/addStudent'">
+								onClick="location.href='${pageContext.request.contextPath}/admin/addStudent'">
 								添加用户信息
 								<sapn class="glyphicon glyphicon-plus" />
 							</button>
@@ -73,9 +73,9 @@
 									<td>${item.collegeName}</td>
 									<td>
 										<button class="btn btn-default btn-xs btn-info"
-											onClick="location.href='/admin/editStudent?id=${item.userid}'">修改</button>
+											onClick="location.href='${pageContext.request.contextPath}/admin/editStudent?id=${item.userid}'">修改</button>
 										<button class="btn btn-default btn-xs btn-danger btn-primary"
-											onClick="location.href='/admin/removeStudent?id=${item.userid}'">删除</button>
+											onClick="location.href='${pageContext.request.contextPath}/admin/removeStudent?id=${item.userid}'">删除</button>
 										<!--弹出框-->
 									</td>
 								</tr>
@@ -121,6 +121,7 @@
 			<div class="col-md-12"></div>
 		</div>
 	</div>
+	<%@include file="Footer.jsp"%>
 </body>
 <script type="text/javascript">
 		$("#nav li:nth-child(2)").addClass("active");

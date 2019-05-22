@@ -48,12 +48,13 @@
 							<tr>
 								<th>课程号</th>
 								<th>课程名称</th>
-								<th>授课老师编号</th>
 								<th>上课时间</th>
 								<th>上课地点</th>
 								<th>周数</th>
 								<th>课程类型</th>
 								<th>学分</th>
+								<th>平时分</th>
+								<th>考试分</th>
 								<th>操作</th>
 							</tr>
 						</thead>
@@ -62,12 +63,13 @@
 								<tr>
 									<td>${item.courseid}</td>
 									<td>${item.coursename}</td>
-									<td>${item.teacherid}</td>
 									<td>${item.coursetime}</td>
 									<td>${item.classroom}</td>
 									<td>${item.courseweek}</td>
 									<td>${item.coursetype}</td>
 									<td>${item.score}</td>
+									<td>${item.regulargrade}</td>
+									<td>${item.boardscores}</td>
 									<td>
 										<button class="btn btn-default btn-xs btn-info"
 											onClick="location.href='${pageContext.request.contextPath}/teacher/gradeCourse?id=${item.courseid}'">成绩</button>
@@ -116,6 +118,7 @@
 			<div class="col-md-12"></div>
 		</div>
 	</div>
+	<%@include file="Footer.jsp"%>
 </body>
 <script type="text/javascript">
 		<%--设置菜单中--%>

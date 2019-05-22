@@ -1,22 +1,22 @@
 /*
 Navicat MySQL Data Transfer
 
-Source Server         : MySQL
-Source Server Version : 50716
+Source Server         : localhost_3306
+Source Server Version : 50562
 Source Host           : localhost:3306
 Source Database       : examination_system
 
 Target Server Type    : MYSQL
-Target Server Version : 50716
+Target Server Version : 50562
 File Encoding         : 65001
 
-Date: 2017-07-08 00:03:38
+Date: 2019-05-20 22:13:38
 */
 
 SET FOREIGN_KEY_CHECKS=0;
 
 -- ----------------------------
--- Table structure for college
+-- Table structure for `college`
 -- ----------------------------
 DROP TABLE IF EXISTS `college`;
 CREATE TABLE `college` (
@@ -33,7 +33,7 @@ INSERT INTO `college` VALUES ('2', '设计系');
 INSERT INTO `college` VALUES ('3', '财经系');
 
 -- ----------------------------
--- Table structure for course
+-- Table structure for `course`
 -- ----------------------------
 DROP TABLE IF EXISTS `course`;
 CREATE TABLE `course` (
@@ -46,6 +46,9 @@ CREATE TABLE `course` (
   `courseType` varchar(20) DEFAULT NULL COMMENT '课程类型',
   `collegeID` int(11) NOT NULL COMMENT '所属院系',
   `score` int(11) NOT NULL COMMENT '学分',
+  `regularGrade` int(11) NOT NULL,
+  `boardScores` int(11) NOT NULL,
+  `teacherName` varchar(20) NOT NULL,
   PRIMARY KEY (`courseID`),
   KEY `collegeID` (`collegeID`),
   KEY `teacherID` (`teacherID`),
@@ -56,15 +59,36 @@ CREATE TABLE `course` (
 -- ----------------------------
 -- Records of course
 -- ----------------------------
-INSERT INTO `course` VALUES ('1', 'C语言程序设计', '1001', '周二', '科401', '18', '必修课', '1', '3');
-INSERT INTO `course` VALUES ('2', 'Python爬虫技巧', '1001', '周四', 'X402', '18', '必修课', '1', '3');
-INSERT INTO `course` VALUES ('3', '数据结构', '1001', '周四', '科401', '18', '必修课', '1', '2');
-INSERT INTO `course` VALUES ('4', 'Java程序设计', '1002', '周五', '科401', '18', '必修课', '1', '2');
-INSERT INTO `course` VALUES ('5', '英语', '1002', '周四', 'X302', '18', '必修课', '2', '2');
-INSERT INTO `course` VALUES ('6', '服装设计', '1003', '周一', '科401', '18', '选修课', '2', '2');
+INSERT INTO `course` VALUES ('1', 'C语言程序设计', '1000', '周三', '西一 201', '10', '必修课', '1', '3', '30', '70', '赵老');
+INSERT INTO `course` VALUES ('2', 'C++程序设计', '1000', '周四', '西一 201', '10', '必修课', '1', '3', '30', '70', '赵老');
+INSERT INTO `course` VALUES ('3', 'Java程序设计', '1001', '周二', '西一 202', '10', '必修课', '1', '3', '30', '70', '钱老');
+INSERT INTO `course` VALUES ('4', 'C#程序设计', '1001', '周一', '西一 202', '10', '必修课', '1', '3', '30', '70', '钱老');
 
 -- ----------------------------
--- Table structure for role
+-- Table structure for `feedback`
+-- ----------------------------
+DROP TABLE IF EXISTS `feedback`;
+CREATE TABLE `feedback` (
+  `studentID` int(11) NOT NULL,
+  `courseID` int(11) NOT NULL,
+  `feedbackText` varchar(2000) NOT NULL,
+  `feedbackDate` date NOT NULL,
+  `feedbackTime` time NOT NULL,
+  `studentName` varchar(200) NOT NULL,
+  `courseName` varchar(200) NOT NULL,
+  `processed` bit(1) NOT NULL,
+  PRIMARY KEY (`studentID`,`courseID`),
+  KEY `feedback_fk_2` (`courseID`),
+  CONSTRAINT `feedback_fk_1` FOREIGN KEY (`studentID`) REFERENCES `student` (`userID`),
+  CONSTRAINT `feedback_fk_2` FOREIGN KEY (`courseID`) REFERENCES `course` (`courseID`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+-- ----------------------------
+-- Records of feedback
+-- ----------------------------
+
+-- ----------------------------
+-- Table structure for `role`
 -- ----------------------------
 DROP TABLE IF EXISTS `role`;
 CREATE TABLE `role` (
@@ -82,13 +106,16 @@ INSERT INTO `role` VALUES ('1', 'teacher', null);
 INSERT INTO `role` VALUES ('2', 'student', null);
 
 -- ----------------------------
--- Table structure for selectedcourse
+-- Table structure for `selectedcourse`
 -- ----------------------------
 DROP TABLE IF EXISTS `selectedcourse`;
 CREATE TABLE `selectedcourse` (
   `courseID` int(11) NOT NULL,
   `studentID` int(11) NOT NULL,
   `mark` int(11) DEFAULT NULL COMMENT '成绩',
+  `boardScores` int(11) DEFAULT NULL,
+  `regularGrade` int(11) DEFAULT NULL,
+  PRIMARY KEY (`courseID`,`studentID`),
   KEY `courseID` (`courseID`),
   KEY `studentID` (`studentID`),
   CONSTRAINT `selectedcourse_ibfk_1` FOREIGN KEY (`courseID`) REFERENCES `course` (`courseID`),
@@ -98,16 +125,9 @@ CREATE TABLE `selectedcourse` (
 -- ----------------------------
 -- Records of selectedcourse
 -- ----------------------------
-INSERT INTO `selectedcourse` VALUES ('2', '10001', '12');
-INSERT INTO `selectedcourse` VALUES ('1', '10001', '95');
-INSERT INTO `selectedcourse` VALUES ('1', '10002', '66');
-INSERT INTO `selectedcourse` VALUES ('1', '10003', null);
-INSERT INTO `selectedcourse` VALUES ('2', '10003', '99');
-INSERT INTO `selectedcourse` VALUES ('5', '10001', null);
-INSERT INTO `selectedcourse` VALUES ('3', '10001', null);
 
 -- ----------------------------
--- Table structure for student
+-- Table structure for `student`
 -- ----------------------------
 DROP TABLE IF EXISTS `student`;
 CREATE TABLE `student` (
@@ -120,20 +140,15 @@ CREATE TABLE `student` (
   PRIMARY KEY (`userID`),
   KEY `collegeID` (`collegeID`),
   CONSTRAINT `student_ibfk_1` FOREIGN KEY (`collegeID`) REFERENCES `college` (`collegeID`)
-) ENGINE=InnoDB AUTO_INCREMENT=10007 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=10003 DEFAULT CHARSET=utf8;
 
 -- ----------------------------
 -- Records of student
 -- ----------------------------
-INSERT INTO `student` VALUES ('10001', '小黄', '男', '1996-09-02', '2015-09-02', '1');
-INSERT INTO `student` VALUES ('10002', '小米', '女', '1995-09-14', '2015-09-02', '3');
-INSERT INTO `student` VALUES ('10003', '小陈', '女', '1996-09-02', '2015-09-02', '2');
-INSERT INTO `student` VALUES ('10004', '小华', '男', '1996-09-02', '2015-09-02', '2');
-INSERT INTO `student` VALUES ('10005', '小左', '女', '1996-09-02', '2015-09-02', '2');
-INSERT INTO `student` VALUES ('10006', '小拉', '女', '1996-09-02', '2015-09-02', '1');
+INSERT INTO `student` VALUES ('10001', '老二', '男', '1996-09-02', '2015-09-02', '1');
 
 -- ----------------------------
--- Table structure for teacher
+-- Table structure for `teacher`
 -- ----------------------------
 DROP TABLE IF EXISTS `teacher`;
 CREATE TABLE `teacher` (
@@ -153,12 +168,11 @@ CREATE TABLE `teacher` (
 -- ----------------------------
 -- Records of teacher
 -- ----------------------------
-INSERT INTO `teacher` VALUES ('1001', '刘老师', '女', '1990-03-08', '硕士', '副教授', '2015-09-02', '2');
-INSERT INTO `teacher` VALUES ('1002', '张老师', '男', '1996-09-02', '本科', '普通教师', '2015-09-02', '1');
-INSERT INTO `teacher` VALUES ('1003', '软老师', '男', '1996-09-02', '硕士', '助教', '2017-07-07', '1');
+INSERT INTO `teacher` VALUES ('1000', '赵老', '男', '1980-09-02', '硕士', '普通教师', '2015-09-02', '1');
+INSERT INTO `teacher` VALUES ('1001', '钱老', '男', '1980-01-01', '硕士', '普通教师', '2015-09-02', '1');
 
 -- ----------------------------
--- Table structure for userlogin
+-- Table structure for `userlogin`
 -- ----------------------------
 DROP TABLE IF EXISTS `userlogin`;
 CREATE TABLE `userlogin` (
@@ -169,19 +183,12 @@ CREATE TABLE `userlogin` (
   PRIMARY KEY (`userID`),
   KEY `role` (`role`),
   CONSTRAINT `userlogin_ibfk_1` FOREIGN KEY (`role`) REFERENCES `role` (`roleID`)
-) ENGINE=InnoDB AUTO_INCREMENT=17 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=21 DEFAULT CHARSET=utf8;
 
 -- ----------------------------
 -- Records of userlogin
 -- ----------------------------
-INSERT INTO `userlogin` VALUES ('1', 'admin', '123', '0');
-INSERT INTO `userlogin` VALUES ('8', '10001', '123', '2');
-INSERT INTO `userlogin` VALUES ('9', '10002', '123', '2');
-INSERT INTO `userlogin` VALUES ('10', '10003', '123', '2');
-INSERT INTO `userlogin` VALUES ('11', '10005', '123', '2');
-INSERT INTO `userlogin` VALUES ('12', '10004', '123', '2');
-INSERT INTO `userlogin` VALUES ('13', '10006', '123', '2');
-INSERT INTO `userlogin` VALUES ('14', '1001', '123', '1');
-INSERT INTO `userlogin` VALUES ('15', '1002', '123', '1');
-INSERT INTO `userlogin` VALUES ('16', '1003', '123', '1');
-SET FOREIGN_KEY_CHECKS=1;
+INSERT INTO `userlogin` VALUES ('1', 'admin', 'admin', '0');
+INSERT INTO `userlogin` VALUES ('18', '1000', '123', '1');
+INSERT INTO `userlogin` VALUES ('19', '1001', '123', '1');
+INSERT INTO `userlogin` VALUES ('20', '10001', '123', '2');

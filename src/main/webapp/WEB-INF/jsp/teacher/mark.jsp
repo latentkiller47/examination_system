@@ -54,9 +54,16 @@
 								</div>
 							</div>
 							<div class="form-group">
-								<label for="inputPassword3" class="col-sm-2 control-label">成绩</label>
+								<label for="inputPassword3" class="col-sm-2 control-label">平时成绩</label>
 								<div class="col-sm-10">
-									<input type="number" name="mark" class="form-control"
+									<input type="number" name="regulargrade" class="form-control"
+										id="inputPassword3" placeholder="请输入成绩">
+								</div>
+							</div>
+							<div class="form-group">
+								<label for="inputPassword3" class="col-sm-2 control-label">考试成绩</label>
+								<div class="col-sm-10">
+									<input type="number" name="boardscores" class="form-control"
 										id="inputPassword3" placeholder="请输入成绩">
 								</div>
 							</div>
@@ -77,6 +84,7 @@
 			<div class="col-md-12"></div>
 		</div>
 	</div>
+	<%@include file="Footer.jsp"%>
 </body>
 <script>
     $("#nav li:nth-child(1)").addClass("active")

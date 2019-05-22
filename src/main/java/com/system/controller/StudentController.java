@@ -71,10 +71,7 @@ public class StudentController {
         } else {
             throw new CustomException("该门课程你已经选了，不能再选");
         }
-
-        return "redirect:/student/"
-        		+ ""
-        		+ "";
+        return "redirect:/student/selectedCourse";
     }
 
     // 退课操作
@@ -82,7 +79,6 @@ public class StudentController {
     public String outCourse(int id) throws Exception {
         Subject subject = SecurityUtils.getSubject();
         String username = (String) subject.getPrincipal();
-    
 
         SelectedCourseCustom selectedCourseCustom = new SelectedCourseCustom();
         selectedCourseCustom.setCourseid(id);
@@ -99,9 +95,10 @@ public class StudentController {
         //获取当前用户名
         Subject subject = SecurityUtils.getSubject();
         StudentCustom studentCustom = studentService.findStudentAndSelectCourseListByName((String) subject.getPrincipal());
-
-        List<SelectedCourseCustom> list = studentCustom.getSelectedCourseList();
-
+        
+        List<SelectedCourseCustom> list;
+        if(studentCustom==null) list=null;
+        else list = studentCustom.getSelectedCourseList();
         model.addAttribute("selectedCourseList", list);
 
         return "student/selectCourse";
@@ -115,8 +112,9 @@ public class StudentController {
         Subject subject = SecurityUtils.getSubject();
         StudentCustom studentCustom = studentService.findStudentAndSelectCourseListByName((String) subject.getPrincipal());
 
-        List<SelectedCourseCustom> list = studentCustom.getSelectedCourseList();
-
+        List<SelectedCourseCustom> list;
+        if(studentCustom==null) list=null;
+        else list = studentCustom.getSelectedCourseList();
         model.addAttribute("selectedCourseList", list);
 
         return "student/overCourse";
@@ -125,19 +123,25 @@ public class StudentController {
     //修改密码
     @RequestMapping(value = "/passwordRest")
     public String passwordRest() throws Exception {
-    	System.out.println("截获1");
         return "student/passwordRest";
     }
     
-    //反馈页面
+    //反馈加载控制器
     @RequestMapping(value = "/Responsive")
     public String Responsive(Model model) throws Exception {
-    	 Subject subject = SecurityUtils.getSubject();
-         StudentCustom studentCustom = studentService.findStudentAndSelectCourseListByName((String) subject.getPrincipal());
-         List<SelectedCourseCustom> list = studentCustom.getSelectedCourseList();
-         model.addAttribute("selectedCourseList", list);
-        return "student/Responsive";
+   	 Subject subject = SecurityUtils.getSubject();
+        StudentCustom studentCustom = studentService.findStudentAndSelectCourseListByName((String) subject.getPrincipal());
+        List<SelectedCourseCustom> list = studentCustom.getSelectedCourseList();
+        model.addAttribute("selectedCourseList", list);
+       return "student/Responsive";
     }
+    
+    //反馈提交控制器
+    @RequestMapping(value = "/Responsive" ,method = {RequestMethod.POST})
+    public String Responsive() throws Exception {
+       return "student/Responsive";
+    }
+    
 
 
 }

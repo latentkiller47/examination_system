@@ -17,15 +17,18 @@
 						src="${pageContext.request.contextPath}/images/logo.png">
 					</a>
 				</div>
-				<div class="navbar-brand">
+				<div class="navbar-brand" style="margin-left:35%">
+					<span class="glyphicon glyphicon-user"><shiro:principal /></span>
 					<span> <script type="text/javascript">
                      		var date = new Date();
-                     		document.write("今天是：" + date.getFullYear() + "年" + (date.getMonth() + 1) + "月" + date.getDate() + "日" + " 星期" + "日一二三四五六".charAt(date.getDay()));
+                     		document.write("，同学您好！");
                    		</script>
 					</span>
-				</div>
-				<div class="navbar-brand">
-					<span class="glyphicon glyphicon-user"><shiro:principal /></span>
+					<span> <script type="text/javascript">
+                     		var date = new Date();
+                     		document.write(date.getFullYear() + "年" + (date.getMonth() + 1) + "月" + date.getDate() + "日" + " 星期" + "日一二三四五六".charAt(date.getDay()));
+                   		</script>
+					</span>
 				</div>
 			</div>
 
