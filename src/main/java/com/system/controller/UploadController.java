@@ -1,10 +1,15 @@
 package com.system.controller;
 
 import java.io.InputStream;
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 
+import javax.annotation.Resource;
 import javax.servlet.http.HttpSession;
 
+import org.apache.poi.hssf.usermodel.HSSFCell;
 import org.apache.poi.hssf.usermodel.HSSFSheet;
 import org.apache.poi.hssf.usermodel.HSSFWorkbook;
 
@@ -13,10 +18,19 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.multipart.MultipartFile;
 
+import com.system.po.TeacherCustom;
+import com.system.po.StudentCustom;
+import com.system.service.StudentService;
+import com.system.service.impl.StudentServiceImpl;
+
 @Controller
 public class UploadController {
   
-	 @RequestMapping(value = "upload", produces = "text/html;charset=UTF-8")
+	
+	 @Resource(name = "studentServiceImpl")
+	    private StudentService studentService;
+	 
+	 @RequestMapping(value = "/stuUpload", produces = "text/html;charset=UTF-8")
 		public String StuUpload(@RequestParam("file") MultipartFile file, HttpSession session) {
 	 
 			// 错误信息  （可以定义一个结果类用于保存信息-错误个数，正确个数，错误信息等）
@@ -31,115 +45,74 @@ public class UploadController {
 	                //Sheet1-----是Excel表格左下方的名称
 					HSSFSheet sheet = hssf.getSheet("Sheet1");
 	 
+					DateFormat format1 = new SimpleDateFormat("dd/MM/yy");  
 	                //读取Excel表格从下标0开始（表头开始）
 					for (int i = 1; i <= sheet.getLastRowNum(); i++) {
 	                    
-						HSSFCell riName = sheet.getRow(i).getCell(0);
-						HSSFCell riBegin = sheet.getRow(i).getCell(1);
-						HSSFCell sName1 = sheet.getRow(i).getCell(2);
-						HSSFCell sName2 = sheet.getRow(i).getCell(3);
-						HSSFCell riEnd = sheet.getRow(i).getCell(4);
-						HSSFCell riDistance = sheet.getRow(i).getCell(5);
-						HSSFCell riFreight = sheet.getRow(i).getCell(6);
+						HSSFCell userid = sheet.getRow(i).getCell(0);
+						HSSFCell username = sheet.getRow(i).getCell(1);
+						HSSFCell sex = sheet.getRow(i).getCell(2);
+						HSSFCell birthyear= sheet.getRow(i).getCell(3);
+						HSSFCell grade = sheet.getRow(i).getCell(4);
+						HSSFCell collegeid = sheet.getRow(i).getCell(5);
+						
 	 
-						if (riName == null) {
-							errors.add("错误行："+(i+1)+",错误信息:路线名称----不能为空！");
+						if (userid == null) {
+							errors.add("错误行："+(i+1)+",错误信息:学工号----不能为空！");
 							continue;
 						}
-						if (riBegin == null) {
-							errors.add("错误行："+(i+1)+",错误信息:起点站----不能为空");
+						if (username == null) {
+							errors.add("错误行："+(i+1)+",错误信息:名字----不能为空");
 							continue;
 						}
-						if (riEnd == null) {
-							errors.add("错误行："+(i+1)+",错误信息:终点站----不能为空");
+						if (sex == null) {
+							errors.add("错误行："+(i+1)+",错误信息:性别----不能为空");
 							continue;
 						}
-						if (riDistance == null || Double.parseDouble(riDistance.toString()) < 0) {
-							errors.add("错误行："+(i+1)+",错误信息:距离----不能为空并且>0");
+						if (birthyear == null ) {
+							errors.add("错误行："+(i+1)+",错误信息:出生日期----不能为空");
 							continue;
 						}
-						if (riFreight == null || Double.parseDouble(riFreight.toString()) < 0) {
-							errors.add("错误行："+(i+1)+",错误信息:价格----不能为空并且>0");
+					
+						if (grade == null ) {
+							errors.add("错误行："+(i+1)+",错误信息:年级----不能为空");
+							continue;
+						}
+						if (collegeid == null ) {
+							errors.add("错误行："+(i+1)+",错误信息:专业id----不能为空");
 							continue;
 						}
 						
-						// 途经站个数
-						int riStandNum = 0;
-						if (sName1 != null) {
-							riStandNum++;
-						}
-						if (sName2 != null) {
-							riStandNum++;
-						}
-						int rs_riId = 0;
-						RouteInfo ri = new RouteInfo(riName.toString(), riBegin.toString(), riEnd.toString(), riStandNum,
-								Double.parseDouble(riDistance.toString()), Double.parseDouble(riFreight.toString()));
-						//判断路线是否存在
-						if(routeInfoService.findIsRiName(ri) != 1) {
-							//不存在
-							//插入数据
-							routeInfoService.insert(ri);
+						
+						
+						
+						@SuppressWarnings("deprecation")
+						StudentCustom t = new StudentCustom();
+						t.setUserid(Integer.valueOf(userid.toString()));
+						t.setUsername( username.toString());
+						t.setSex(sex.toString());
+						t.setBirthyear(format1.parse(birthyear.toString()));
+						t.setGrade(format1.parse(grade.toString()));
+						t.setCollegeid(Integer.valueOf(collegeid.toString()));
+						
+						if(!studentService.save(t))
+							errors.add("插入失败");
 							//获得插入时的路线id
-							rs_riId = ri.getRiId();
-						}else {
-							//存在
-							errors.add("该路线："+ri.getRiName()+"  已存在");
-							continue;
-						}
-	 
-						Stand s1 = new Stand(riBegin.toString());
-						Stand s2 = new Stand(riEnd.toString());
-						if(standService.findIsSName(s1) != 1) {
-							//数据库中不存在
-							standService.insert(s1);
-						}
-						if(standService.findIsSName(s2) != 1) {
-							//数据库中不存在
-							standService.insert(s2);
-						}
 						
-						//获得途经站id
-						Integer rs_sId1 = null;
-						Integer rs_sId2 = null;
-						if (sName1 != null) {
-							Stand s = new Stand(sName1.toString());
-							//根据途经站名称查询数据库中是否存在
-							if(standService.findIsSName(s) != 1) {
-								//数据库中不存在
-								standService.insert(s);
-								rs_sId1 = s.getsId();
-							}else {
-								//数据库中存在
-								rs_sId1 = standService.findsIdBySName(s);
-							}
-						}
-						if (sName2 != null) {
-							Stand s = new Stand(sName2.toString());
-							//根据途经站名称查询数据库中是否存在
-							if(standService.findIsSName(s) != 1) {
-								//数据库中不存在
-								standService.insert(s);
-								rs_sId2 = s.getsId();
-							}else {
-								//数据库中存在
-								rs_sId2 = standService.findsIdBySName(s);
-							}
-						}
-						
-						//插入路线和路线点对应关系
-						RouteStand rs = new RouteStand(rs_riId, rs_sId1, rs_sId2);
-						routeStandService.insert(rs);
 					}
 					is.close();
 				}
-	            //json 数据数据格式
-	            //Gson gson = new Gson();
-	            //gson.toJson(errors);
+	          
 			} catch (Exception e) {
 				e.printStackTrace();
 			}
 			session.setAttribute("errors", errors);
-			return "ok";
+			return "stuUpdate";
 		}
+				}
+				
+			
+				
+			
 	
-}
+
